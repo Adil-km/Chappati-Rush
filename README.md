@@ -2,102 +2,41 @@
 
 
 
-# [Project Name] 🎯
+# Chappati Rush 🫓🎯
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name: Roti Warriors
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Team Lead: Developer - College/Institute
+- Member 2: Developer - College/Institute
 
 ### Project Description
-[2-3 lines about what your project does]
+Chappati Rush is an interactive, physics-based 2D roti rolling game set in a hilarious Malayalam cinema universe. Players roll, flatten, and squeeze a 64-vertex deformable dough mesh into custom target shapes (circles, ovals, squares, triangles, hearts, stars) to serve iconic Malayalam movie legends like Dasan Ashaan, Manar Mathai, Anjooran, Pavanayi, Nagavalli, Dr. Sunny, and Sethumadhavan before time runs out!
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+Malayalam cinema legends are hungry, impatient, and demanding rotis rolled into absurd geometric shapes (stars, hearts, crescents, squares). Making a normal round roti is hard enough, but serving a crescent roti to Nagavalli or a star roti to Dr. Sunny in under 30 seconds requires elite rolling pin physics mastery.
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+A 64-vertex mass-spring deformable dough physics simulation built on HTML5 Canvas, featuring bidirectional deformation (flattening & inward edge squeezing), live Malayalam dialogue commentary, interactive storyline campaign stages, and dynamic score evaluation!
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
-
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
-
-### Implementation
-For Software:
-# Installation
-[commands]
-
-# Run
-[commands]
-
-### Project Documentation
-For Software:
-
-# Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
-
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
-
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
-
-# Diagrams
-![Workflow](Add your workflow/architecture diagram here)
-*Add caption explaining your workflow*
-
-For Hardware:
-
-# Schematic & Circuit
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
-
-# Build Photos
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
+- Languages: JavaScript (ES6+), HTML5, CSS3
+- Frameworks: React 18, Vite
+- Libraries: Howler.js (Audio FX & BGM), Lucide React (UI Icons), Canvas 2D API
+- Services: LocalStorage Persistence
 
 ### Project Demo
 # Video
 [Add your demo video link here]
-*Explain what the video demonstrates*
-
-# Additional Demos
-[Add any extra demo materials/links]
-
-## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+*Demonstrates interactive dough rolling mechanics, stage dialogue modal, score calculation, and level progression*
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
 
 ![Static Badge](https://img.shields.io/badge/TinkerHub-24?color=%23000000&link=https%3A%2F%2Fwww.tinkerhub.org%2F)
 ![Static Badge](https://img.shields.io/badge/UselessProjects--26-26?link=https%3A%2F%2Ftinkerhub.org%2Fevents%2F1M8ORET9A1%2Fuseless-projects-3.0)
-
-
-

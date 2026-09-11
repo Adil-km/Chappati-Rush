@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
-import { Home, Trophy, Sparkles } from 'lucide-react';
+import { Home, Trophy, Sparkles, ArrowRight } from 'lucide-react';
 import { soundManager } from '../utils/audio';
-import { saveUserScoreToFirestore } from '../utils/firestoreLeaderboard';
 
-export default function ResultModal({ user, result, targetTitle = 'Circle', isNewBest, onPlayAgain, onGoHome, onOpenLeaderboard }) {
+export default function ResultModal({ 
+  result, 
+  targetTitle = 'Circle', 
+  isNewBest, 
+  isLevelPassed = true,
+  hasNextLevel, 
+  onNextLevel, 
+  onPlayAgain, 
+  onGoHome 
+}) {
   const [animatedScore, setAnimatedScore] = useState(0);
 
   useEffect(() => {
     // Play celebratory audio
     soundManager.playVictory(isNewBest);
-
-    // Auto-sync score to Firestore if user is signed in
-    if (user) {
-      saveUserScoreToFirestore(user, result.totalScore, result.completionTimeSeconds, targetTitle);
-    }
 
     // Trigger confetti on high scores or new records
     if (result.totalScore >= 88 || isNewBest) {
@@ -43,7 +46,7 @@ export default function ResultModal({ user, result, targetTitle = 'Circle', isNe
     }, stepTime);
 
     return () => clearInterval(timer);
-  }, [user, result, isNewBest, targetTitle]);
+  }, [result, isNewBest, targetTitle]);
 
   return (
     <div className="overlay-screen">
@@ -94,18 +97,20 @@ export default function ResultModal({ user, result, targetTitle = 'Circle', isNe
         </div>
 
         {/* Action Buttons */}
-        <div style={{ display: 'flex', gap: '0.75rem', width: '100%', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '0.65rem', width: '100%', justifyContent: 'center', flexWrap: 'wrap' }}>
           <button className="btn-secondary" onClick={onGoHome}>
             <Home size={18} /> Home
           </button>
-          {onOpenLeaderboard && (
-            <button className="btn-secondary" onClick={onOpenLeaderboard} style={{ borderColor: '#fbbf24', color: '#fbbf24' }}>
-              <Trophy size={18} /> Leaderboard
+
+          <button className="btn-secondary" onClick={onPlayAgain}>
+            <Sparkles size={18} /> Replay
+          </button>
+
+          {isLevelPassed && hasNextLevel && onNextLevel && (
+            <button className="btn-primary" onClick={onNextLevel} style={{ padding: '0.75rem 1.6rem' }}>
+              NEXT LEVEL <ArrowRight size={20} />
             </button>
           )}
-          <button className="btn-primary" onClick={onPlayAgain}>
-            <Sparkles size={20} fill="#451a03" /> Play Again
-          </button>
         </div>
       </div>
     </div>

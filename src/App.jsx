@@ -4,8 +4,7 @@ import { createInitialDough } from './utils/doughPhysics';
 import { calculateGameScore } from './utils/scoring';
 import { soundManager } from './utils/audio';
 import { SHAPES } from './utils/shapeTargets';
-import { calculateLevelStars, STORY_STAGES } from './utils/malayalamStoryline';
-import { subscribeToAuth, signInWithGoogle, signOutUser } from './utils/firebaseAuth';
+import { calculateLevelStars, STORY_STAGES, getNextLevel } from './utils/malayalamStoryline';
 
 import DoughCanvas from './components/DoughCanvas';
 import HomeScreen from './components/HomeScreen';
@@ -14,7 +13,6 @@ import MalayalamDialogueModal from './components/MalayalamDialogueModal';
 import HUD from './components/HUD';
 import ResultModal from './components/ResultModal';
 import LiveCommentary from './components/LiveCommentary';
-import LeaderboardModal from './components/LeaderboardModal';
 
 const DEFAULT_TIME = 30;
 
@@ -26,16 +24,6 @@ export default function App() {
   const [gameResult, setGameResult] = useState(null);
   const [isNewBest, setIsNewBest] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [showLeaderboard, setShowLeaderboard] = useState(false);
-  const [user, setUser] = useState(null);
-
-  // Firebase Auth State Observer
-  useEffect(() => {
-    const unsubscribe = subscribeToAuth(currentUser => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe && unsubscribe();
-  }, []);
 
   // LocalStorage stats
   const [stats, setStats] = useState(() => {
@@ -83,21 +71,6 @@ export default function App() {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [gameState]);
-
-  // Auth Handlers
-  const handleSignInGoogle = async () => {
-    try {
-      soundManager.playClick();
-      await signInWithGoogle();
-    } catch (err) {
-      alert('Google Sign-In failed or popup was closed.');
-    }
-  };
-
-  const handleSignOut = async () => {
-    soundManager.playClick();
-    await signOutUser();
-  };
 
   // Mode Selection Handlers
   const handleStartStoryMode = () => {
@@ -161,7 +134,7 @@ export default function App() {
       localStorage.setItem('chappati_rush_stats', JSON.stringify(updatedStats));
     } catch (e) {}
 
-    // Campaign Progress unlocks
+    let updatedCampaign = campaignProgress;
     if (currentLevel) {
       const stars = calculateLevelStars(result.totalScore);
       const isPassed = result.totalScore >= currentLevel.passingScore;
@@ -174,7 +147,7 @@ export default function App() {
         currentUnlocked.add(nextLevelId);
       }
 
-      const updatedCampaign = {
+      updatedCampaign = {
         ...campaignProgress,
         unlockedLevels: Array.from(currentUnlocked),
         [currentLevel.id]: {
@@ -200,6 +173,15 @@ export default function App() {
   const activeCharacter = currentLevel 
     ? currentLevel.character 
     : STORY_STAGES[0].levels[0].character;
+
+  const nextLevel = currentLevel ? getNextLevel(currentLevel) : null;
+
+  const handleNextLevel = () => {
+    if (nextLevel) {
+      setCurrentLevel(nextLevel);
+      setGameState('DIALOGUE');
+    }
+  };
 
   return (
     <div className="game-viewport">
@@ -231,28 +213,15 @@ export default function App() {
         />
       )}
 
-      {/* Global Leaderboard Modal Overlay */}
-      {showLeaderboard && (
-        <LeaderboardModal 
-          currentUser={user} 
-          onClose={() => setShowLeaderboard(false)} 
-        />
-      )}
-
       {/* UI Overlays */}
-      {gameState === 'HOME' && !showLeaderboard && (
+      {gameState === 'HOME' && (
         <HomeScreen 
-          user={user}
-          onSignInGoogle={handleSignInGoogle}
-          onSignOut={handleSignOut}
-          onOpenLeaderboard={() => setShowLeaderboard(true)}
-          onStartStoryMode={handleStartStoryMode} 
-          onStartQuickPlay={handleStartQuickPlay} 
+          onPlay={handleStartStoryMode} 
           stats={stats} 
         />
       )}
 
-      {gameState === 'CAMPAIGN_MAP' && !showLeaderboard && (
+      {gameState === 'CAMPAIGN_MAP' && (
         <CampaignMap 
           campaignProgress={campaignProgress} 
           onSelectLevel={handleSelectLevel} 
@@ -260,7 +229,7 @@ export default function App() {
         />
       )}
 
-      {gameState === 'DIALOGUE' && currentLevel && !showLeaderboard && (
+      {gameState === 'DIALOGUE' && currentLevel && (
         <MalayalamDialogueModal 
           level={currentLevel} 
           onStartCooking={handleStartLevelCooking} 
@@ -275,15 +244,16 @@ export default function App() {
         />
       )}
 
-      {gameState === 'RESULT' && gameResult && !showLeaderboard && (
+      {gameState === 'RESULT' && gameResult && (
         <ResultModal 
-          user={user}
           result={gameResult} 
           targetTitle={currentLevel ? currentLevel.title : 'Circle'}
           isNewBest={isNewBest} 
+          isLevelPassed={!currentLevel || (gameResult.totalScore >= currentLevel.passingScore)}
+          hasNextLevel={!!nextLevel}
+          onNextLevel={handleNextLevel}
           onPlayAgain={() => currentLevel ? setGameState('DIALOGUE') : handleStartQuickPlay()} 
           onGoHome={() => currentLevel ? setGameState('CAMPAIGN_MAP') : setGameState('HOME')} 
-          onOpenLeaderboard={() => setShowLeaderboard(true)}
         />
       )}
     </div>

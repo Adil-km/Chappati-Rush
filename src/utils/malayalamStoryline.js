@@ -1,5 +1,4 @@
 import storylineData from '../data/storylineData.json';
-import { SHAPES } from './shapeTargets';
 
 export const STORY_STAGES = storylineData.stages;
 
@@ -9,6 +8,16 @@ export function getLevelById(levelId) {
     if (found) return found;
   }
   return STORY_STAGES[0].levels[0];
+}
+
+export function getNextLevel(currentLevel) {
+  if (!currentLevel) return null;
+  const nextNumber = currentLevel.levelNumber + 1;
+  for (const stage of STORY_STAGES) {
+    const found = stage.levels.find(l => l.levelNumber === nextNumber);
+    if (found) return found;
+  }
+  return null;
 }
 
 export function calculateLevelStars(score) {
