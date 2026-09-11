@@ -89,22 +89,41 @@ export function getTargetShapePoints(shapeType, cx = 300, cy = 300, numPoints = 
     }
 
     case SHAPES.CRESCENT: {
-      const R = 95;
-      const r = 70;
-      const offsetX = 35;
-      for (let i = 0; i < numPoints; i++) {
-        const angle = (i / numPoints) * Math.PI * 2;
-        if (angle <= Math.PI) {
-          points.push({
-            x: cx + R * Math.cos(angle - Math.PI / 2),
-            y: cy + R * Math.sin(angle - Math.PI / 2)
-          });
-        } else {
-          points.push({
-            x: cx + offsetX + r * Math.cos(3 * Math.PI / 2 - (angle - Math.PI)),
-            y: cy + r * Math.sin(3 * Math.PI / 2 - (angle - Math.PI))
-          });
-        }
+      const half = Math.floor(numPoints / 2);
+      const span = Math.PI * 0.72; // Arc angle span
+
+      // Outer Arc Tip coordinates
+      const topTipX = -12 + 95 * Math.cos(-span);
+      const topTipY = 95 * Math.sin(-span);
+      const botTipX = -12 + 95 * Math.cos(span);
+      const botTipY = 95 * Math.sin(span);
+
+      // Outer Arc: From top tip to bottom tip
+      for (let i = 0; i < half; i++) {
+        const frac = i / (half - 1);
+        const angle = -span + frac * (2 * span);
+        points.push({
+          x: cx - 12 + 95 * Math.cos(angle),
+          y: cy + 95 * Math.sin(angle)
+        });
+      }
+
+      // Inner Arc: From bottom tip back to top tip (tapered to meet tips seamlessly)
+      for (let i = 0; i < numPoints - half; i++) {
+        const frac = i / (numPoints - half - 1);
+        const angle = span - frac * (2 * span);
+        const taper = Math.sin(frac * Math.PI); // 0 at tips, 1 at center cutout
+
+        const innerX = 18 + 72 * Math.cos(angle);
+        const innerY = 72 * Math.sin(angle);
+
+        const targetTipX = (frac < 0.5) ? botTipX : topTipX;
+        const targetTipY = (frac < 0.5) ? botTipY : topTipY;
+
+        points.push({
+          x: cx + (innerX * taper + targetTipX * (1 - taper)),
+          y: cy + (innerY * taper + targetTipY * (1 - taper))
+        });
       }
       break;
     }

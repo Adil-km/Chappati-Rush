@@ -23,7 +23,11 @@
               "good": "Bhaashaa! Looking round and smooth like a full moon!",
               "bad": "Ayyeyyo! What is this shape? Looks like a flat potato!",
               "timeLow": "Vegam, vegam! Time is running out!",
-              "idle": ["Don't press too hard!", "Keep rolling around the edges!", "Focus on the shape!"]
+              "idle": [
+                "Don't press too hard!",
+                "Keep rolling around the edges!",
+                "Focus on the shape!"
+              ]
             }
           }
         },
@@ -45,7 +49,11 @@
               "good": "Wonderful! That oval curve is perfect!",
               "bad": "Enthutukatha idhu! That looks like a broken egg!",
               "timeLow": "Fast! Phone is ringing for lunch delivery!",
-              "idle": ["Stretch it sideways!", "Keep it soft and fluffy!", "Don't ruin Urvashi's lunch!"]
+              "idle": [
+                "Stretch it sideways!",
+                "Keep it soft and fluffy!",
+                "Don't ruin Urvashi's lunch!"
+              ]
             }
           }
         }
@@ -74,7 +82,11 @@
               "good": "Good sharp corners! Anjooran is pleased!",
               "bad": "Curved edges?! Did I ask for a round roti?!",
               "timeLow": "Hurry up before Anjooran gets furious!",
-              "idle": ["No circles allowed here!", "Square means 4 sharp corners!", "Roll into the corners!"]
+              "idle": [
+                "No circles allowed here!",
+                "Square means 4 sharp corners!",
+                "Roll into the corners!"
+              ]
             }
           }
         },
@@ -96,7 +108,11 @@
               "good": "Ha! Sharp 3 corners like a royal sword!",
               "bad": "This soft blob won't scare Shekaran!",
               "timeLow": "Clock is ticking, finish the triangle!",
-              "idle": ["Three sharp points!", "Roll towards the apex!", "Make Neelakandan proud!"]
+              "idle": [
+                "Three sharp points!",
+                "Roll towards the apex!",
+                "Make Neelakandan proud!"
+              ]
             }
           }
         }
@@ -125,7 +141,11 @@
               "good": "Ah... Nagavalli's heart is pleased!",
               "bad": "Is this a heart or a squashed coconut?! Nagavalli will wake up!",
               "timeLow": "The anklet bells are starting to chime! Fast!",
-              "idle": ["Two top lobes, one bottom point!", "Gentle strokes for Nagavalli!", "Make it romantic!"]
+              "idle": [
+                "Two top lobes, one bottom point!",
+                "Gentle strokes for Nagavalli!",
+                "Make it romantic!"
+              ]
             }
           }
         },
@@ -147,7 +167,11 @@
               "good": "Excellent therapy! The curve is scientifically accurate!",
               "bad": "My diagnosis: This shape is completely unhinged!",
               "timeLow": "Quick! Nagavalli is getting restless!",
-              "idle": ["Curve it like the moon!", "Psychological perfection required!", "Keep the inner arch smooth!"]
+              "idle": [
+                "Curve it like the moon!",
+                "Psychological perfection required!",
+                "Keep the inner arch smooth!"
+              ]
             }
           }
         },
@@ -169,7 +193,11 @@
               "good": "5 shining points! Worthy of the crown!",
               "bad": "This is a tragedy... Where are the 5 star points?!",
               "timeLow": "Fate is calling, finish the star fast!",
-              "idle": ["5 outer star points!", "Pull outward gently!", "Crown the roti!"]
+              "idle": [
+                "5 outer star points!",
+                "Pull outward gently!",
+                "Crown the roti!"
+              ]
             }
           }
         }
@@ -198,7 +226,11 @@
               "good": "Impossible... You matched Pavanayi's secret design!",
               "bad": "Pavanayi shavamayi? No! Your roti is shavamayi!",
               "timeLow": "Briefcase timer activated! 5 seconds left!",
-              "idle": ["Pavanayi is watching your every move!", "Don't make a single mistake!", "Secret assassin level accuracy!"]
+              "idle": [
+                "Pavanayi is watching your every move!",
+                "Don't make a single mistake!",
+                "Secret assassin level accuracy!"
+              ]
             }
           }
         }

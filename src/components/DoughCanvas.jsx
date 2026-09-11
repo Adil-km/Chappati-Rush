@@ -242,6 +242,9 @@ export default function DoughCanvas({ dough, setDough, isInteractive = true, tar
   // Pointer Event Handlers
   const handlePointerDown = (e) => {
     if (!isInteractive) return;
+    if (e.cancelable && e.touches) {
+      // Prevent mobile page scroll when dragging dough
+    }
     const coords = getCanvasCoords(e);
     if (!coords) return;
 
