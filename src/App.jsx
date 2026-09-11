@@ -3,18 +3,23 @@ import { Volume2, VolumeX } from 'lucide-react';
 import { createInitialDough } from './utils/doughPhysics';
 import { calculateGameScore } from './utils/scoring';
 import { soundManager } from './utils/audio';
+import { SHAPES } from './utils/shapeTargets';
+import { calculateLevelStars } from './utils/malayalamStoryline';
 
 import DoughCanvas from './components/DoughCanvas';
 import HomeScreen from './components/HomeScreen';
+import CampaignMap from './components/CampaignMap';
+import MalayalamDialogueModal from './components/MalayalamDialogueModal';
 import HUD from './components/HUD';
 import ResultModal from './components/ResultModal';
 
-const INITIAL_TIME = 30;
+const DEFAULT_TIME = 30;
 
 export default function App() {
-  const [gameState, setGameState] = useState('HOME'); // 'HOME' | 'PLAYING' | 'RESULT'
+  const [gameState, setGameState] = useState('HOME'); // 'HOME' | 'CAMPAIGN_MAP' | 'DIALOGUE' | 'PLAYING' | 'RESULT'
+  const [currentLevel, setCurrentLevel] = useState(null);
   const [dough, setDough] = useState(() => createInitialDough(300, 300));
-  const [timeLeft, setTimeLeft] = useState(INITIAL_TIME);
+  const [timeLeft, setTimeLeft] = useState(DEFAULT_TIME);
   const [gameResult, setGameResult] = useState(null);
   const [isNewBest, setIsNewBest] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -26,6 +31,16 @@ export default function App() {
       return saved ? JSON.parse(saved) : { bestScore: 0, bestTime: null, attempts: 0 };
     } catch (e) {
       return { bestScore: 0, bestTime: null, attempts: 0 };
+    }
+  });
+
+  // LocalStorage Campaign Progress
+  const [campaignProgress, setCampaignProgress] = useState(() => {
+    try {
+      const saved = localStorage.getItem('chappati_rush_campaign');
+      return saved ? JSON.parse(saved) : { unlockedLevels: ['level_1'] };
+    } catch (e) {
+      return { unlockedLevels: ['level_1'] };
     }
   });
 
@@ -56,9 +71,28 @@ export default function App() {
     };
   }, [gameState]);
 
-  const handleStartGame = () => {
+  // Mode Selection Handlers
+  const handleStartStoryMode = () => {
+    setGameState('CAMPAIGN_MAP');
+  };
+
+  const handleSelectLevel = (level) => {
+    setCurrentLevel(level);
+    setGameState('DIALOGUE');
+  };
+
+  const handleStartLevelCooking = () => {
     setDough(createInitialDough(300, 300));
-    setTimeLeft(INITIAL_TIME);
+    setTimeLeft(currentLevel ? currentLevel.timeLimit : DEFAULT_TIME);
+    setGameResult(null);
+    setIsNewBest(false);
+    setGameState('PLAYING');
+  };
+
+  const handleStartQuickPlay = () => {
+    setCurrentLevel(null);
+    setDough(createInitialDough(300, 300));
+    setTimeLeft(DEFAULT_TIME);
     setGameResult(null);
     setIsNewBest(false);
     setGameState('PLAYING');
@@ -74,12 +108,14 @@ export default function App() {
 
   const handleSubmitDough = (overrideRemainingTime) => {
     const remaining = overrideRemainingTime !== undefined ? overrideRemainingTime : timeLeft;
-    const completionTime = Math.max(0.5, INITIAL_TIME - remaining);
-    
-    const result = calculateGameScore(dough, completionTime);
+    const initialDuration = currentLevel ? currentLevel.timeLimit : DEFAULT_TIME;
+    const completionTime = Math.max(0.5, initialDuration - remaining);
+    const targetShape = currentLevel ? currentLevel.shapeType : SHAPES.CIRCLE;
+
+    const result = calculateGameScore(dough, completionTime, targetShape);
     setGameResult(result);
 
-    // Save statistics & check for new personal best
+    // Stats persistence
     const currentBest = stats.bestScore || 0;
     const newBest = result.totalScore > currentBest;
     setIsNewBest(newBest);
@@ -96,6 +132,35 @@ export default function App() {
     try {
       localStorage.setItem('chappati_rush_stats', JSON.stringify(updatedStats));
     } catch (e) {}
+
+    // Campaign Progress unlocks
+    if (currentLevel) {
+      const stars = calculateLevelStars(result.totalScore);
+      const isPassed = result.totalScore >= currentLevel.passingScore;
+
+      const currentUnlocked = new Set(campaignProgress.unlockedLevels || ['level_1']);
+
+      if (isPassed) {
+        // Unlock next level if available
+        const nextLevelNumber = currentLevel.levelNumber + 1;
+        const nextLevelId = `level_${nextLevelNumber}`;
+        currentUnlocked.add(nextLevelId);
+      }
+
+      const updatedCampaign = {
+        ...campaignProgress,
+        unlockedLevels: Array.from(currentUnlocked),
+        [currentLevel.id]: {
+          score: Math.max(result.totalScore, campaignProgress[currentLevel.id]?.score || 0),
+          stars: Math.max(stars, campaignProgress[currentLevel.id]?.stars || 0)
+        }
+      };
+
+      setCampaignProgress(updatedCampaign);
+      try {
+        localStorage.setItem('chappati_rush_campaign', JSON.stringify(updatedCampaign));
+      } catch (e) {}
+    }
 
     setGameState('RESULT');
   };
@@ -116,18 +181,36 @@ export default function App() {
         {isMuted ? <VolumeX size={22} color="#ef4444" /> : <Volume2 size={22} color="#fbbf24" />}
       </button>
 
-      {/* Main Canvas (Always mounted for smooth rendering) */}
+      {/* Main Canvas */}
       <DoughCanvas 
         dough={dough} 
         setDough={setDough} 
         isInteractive={gameState === 'PLAYING'} 
+        targetShapeType={currentLevel ? currentLevel.shapeType : SHAPES.CIRCLE}
+        targetTitle={currentLevel ? `${currentLevel.title} (${currentLevel.shapeType})` : '180px Circle'}
       />
 
       {/* UI Overlays */}
       {gameState === 'HOME' && (
         <HomeScreen 
-          onStartGame={handleStartGame} 
+          onStartStoryMode={handleStartStoryMode} 
+          onStartQuickPlay={handleStartQuickPlay} 
           stats={stats} 
+        />
+      )}
+
+      {gameState === 'CAMPAIGN_MAP' && (
+        <CampaignMap 
+          campaignProgress={campaignProgress} 
+          onSelectLevel={handleSelectLevel} 
+          onBack={() => setGameState('HOME')} 
+        />
+      )}
+
+      {gameState === 'DIALOGUE' && currentLevel && (
+        <MalayalamDialogueModal 
+          level={currentLevel} 
+          onStartCooking={handleStartLevelCooking} 
         />
       )}
 
@@ -143,8 +226,8 @@ export default function App() {
         <ResultModal 
           result={gameResult} 
           isNewBest={isNewBest} 
-          onPlayAgain={handleStartGame} 
-          onGoHome={() => setGameState('HOME')} 
+          onPlayAgain={() => currentLevel ? setGameState('DIALOGUE') : handleStartQuickPlay()} 
+          onGoHome={() => currentLevel ? setGameState('CAMPAIGN_MAP') : setGameState('HOME')} 
         />
       )}
     </div>

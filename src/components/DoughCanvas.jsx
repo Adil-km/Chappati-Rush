@@ -1,10 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { applyRollingPinStroke, TARGET_RADIUS } from '../utils/doughPhysics';
+import { applyRollingPinStroke } from '../utils/doughPhysics';
+import { drawTargetShapeOutline, SHAPES } from '../utils/shapeTargets';
 import { soundManager } from '../utils/audio';
 
 const CANVAS_SIZE = 600;
 
-export default function DoughCanvas({ dough, setDough, isInteractive = true }) {
+export default function DoughCanvas({ dough, setDough, isInteractive = true, targetShapeType = SHAPES.CIRCLE, targetTitle = '180px Circle' }) {
   const canvasRef = useRef(null);
   const [isRolling, setIsRolling] = useState(false);
   const mousePos = useRef({ x: CANVAS_SIZE / 2, y: CANVAS_SIZE / 2 });
@@ -66,21 +67,8 @@ export default function DoughCanvas({ dough, setDough, isInteractive = true }) {
         ctx.fill();
       });
 
-      // 4. Render Target Shape Outline (Circle 180px diameter => 90px radius)
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, TARGET_RADIUS, 0, Math.PI * 2);
-      ctx.setLineDash([8, 6]);
-      ctx.strokeStyle = 'rgba(251, 191, 36, 0.75)';
-      ctx.lineWidth = 3;
-      ctx.stroke();
-
-      ctx.setLineDash([]);
-      ctx.fillStyle = 'rgba(251, 191, 36, 0.85)';
-      ctx.font = '600 13px Fredoka, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('TARGET (180px)', centerX, centerY - TARGET_RADIUS - 12);
-      ctx.restore();
+      // 4. Render Target Shape Outline (Dynamic Shape: Circle, Oval, Square, etc.)
+      drawTargetShapeOutline(ctx, targetShapeType, centerX, centerY, targetTitle);
 
       // 5. Render Deformable Dough Mesh
       if (radii && radii.length > 0) {
