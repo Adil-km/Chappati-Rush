@@ -65,22 +65,28 @@ export function applyRollingPinStroke(dough, p1x, p1y, p2x, p2y, pinWidth = 140)
     const projPerp = Math.abs(dx * perpX + dy * perpY);
 
     // Check if vertex is within roller width contact zone
-    if (Math.abs(projAlong) < strokeLength * 1.2 && projPerp < pinWidth / 2) {
-      // Calculate how directly the roll direction aligns with vertex angle
+    if (Math.abs(projAlong) < strokeLength * 1.5 && projPerp < pinWidth / 2) {
+      // Vertex radial direction unit vector (from dough center to vertex)
       const vertexDirX = Math.cos(angle);
       const vertexDirY = Math.sin(angle);
       const alignment = vertexDirX * dirX + vertexDirY * dirY;
+      const proximityFactor = 1 - projPerp / (pinWidth / 2);
 
-      // Expand outward in vertex direction if roll pushes towards it
-      if (alignment > -0.2) {
-        const pushFactor = (alignment + 0.3) * force * (1 - projPerp / (pinWidth / 2));
+      if (alignment > 0.1) {
+        // Outward Roll: Flatten & Expand dough outwards
+        const pushFactor = alignment * force * 0.85 * proximityFactor;
         radii[i] += pushFactor;
+        updated = true;
+      } else if (alignment < -0.15) {
+        // Inward Roll: Squeeze & Shrink dough inwards towards center (Gentler magnitude & sharply focused)
+        const squeezeFactor = Math.abs(alignment) * force * 0.32 * Math.pow(proximityFactor, 2.2);
+        radii[i] = Math.max(25, radii[i] - squeezeFactor);
         updated = true;
       }
     }
   }
 
-  // Smooth dough boundary if updated to maintain soft organic dough consistency
+  // Smooth dough boundary if updated while preserving sharp localized contours
   if (updated) {
     smoothDoughRadii(radii);
   }
@@ -95,22 +101,16 @@ export function smoothDoughRadii(radii) {
   const n = radii.length;
   const temp = new Float32Array(n);
 
-  // Pass 1: 3-tap weighted moving average
+  // Single-pass 3-tap weighted filter preserving sharp localized indentations (like hearts & stars)
   for (let i = 0; i < n; i++) {
     const prev = radii[(i - 1 + n) % n];
     const curr = radii[i];
     const next = radii[(i + 1) % n];
-    temp[i] = prev * 0.22 + curr * 0.56 + next * 0.22;
+    temp[i] = prev * 0.18 + curr * 0.64 + next * 0.18;
   }
 
-  // Pass 2: 5-tap Gaussian smoothing for silky smooth organic curves
   for (let i = 0; i < n; i++) {
-    const p2 = temp[(i - 2 + n) % n];
-    const p1 = temp[(i - 1 + n) % n];
-    const curr = temp[i];
-    const n1 = temp[(i + 1) % n];
-    const n2 = temp[(i + 2) % n];
-    radii[i] = p2 * 0.08 + p1 * 0.24 + curr * 0.36 + n1 * 0.24 + n2 * 0.08;
+    radii[i] = temp[i];
   }
 }
 
