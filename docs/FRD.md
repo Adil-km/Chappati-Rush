@@ -1,7 +1,7 @@
 Functional Requirements Document (FRD)
 1. Project Overview
 1.1 Project Name
-Chappati Rush
+Chappathi Rush
 1.2 Product Type
 Browser-based casual game
 1.3 Platform
@@ -9,7 +9,7 @@ Desktop web browsers
 Mobile web browsers
 Tablet browsers
 1.4 Concept
-Chappati Rush is a casual, physics-inspired cooking game where the player rolls a piece of dough using a virtual rolling pin.
+Chappathi Rush is a casual, physics-inspired cooking game where the player rolls a piece of dough using a virtual rolling pin.
 The player's objective is to transform the dough into a target shape as accurately as possible.
 The game evaluates the final dough based on:
 Shape accuracy
@@ -88,13 +88,13 @@ Additional shapes should be added after the core mechanic is proven fun.
 Purpose
 Introduce the game and allow the player to start.
 Elements
-Game logo: Chappati Rush
+Game logo: Chappathi Rush
 Play button
 Best score
 Short instruction
 Optional settings button
 Example
-🫓 Chappati Rush
+🫓 Chappathi Rush
 Can you make the perfect roti?
 [ PLAY ]
 Best Score: 96.8
@@ -573,5 +573,5 @@ Good interaction > complicated features
 A simple game with satisfying dough physics will be more successful than a feature-rich game with frustrating controls.
 
 32. One-Sentence Product Definition
-Chappati Rush is a casual browser game where players roll virtual dough into increasingly challenging shapes and compete for the highest accuracy score.
+Chappathi Rush is a casual browser game where players roll virtual dough into increasingly challenging shapes and compete for the highest accuracy score.
 

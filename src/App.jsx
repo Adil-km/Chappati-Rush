@@ -28,7 +28,7 @@ export default function App() {
   // LocalStorage stats
   const [stats, setStats] = useState(() => {
     try {
-      const saved = localStorage.getItem('chappati_rush_stats');
+      const saved = localStorage.getItem('chappathi_rush_stats');
       return saved ? JSON.parse(saved) : { bestScore: 0, bestTime: null, attempts: 0 };
     } catch (e) {
       return { bestScore: 0, bestTime: null, attempts: 0 };
@@ -38,7 +38,7 @@ export default function App() {
   // LocalStorage Campaign Progress
   const [campaignProgress, setCampaignProgress] = useState(() => {
     try {
-      const saved = localStorage.getItem('chappati_rush_campaign');
+      const saved = localStorage.getItem('chappathi_rush_campaign');
       return saved ? JSON.parse(saved) : { unlockedLevels: ['level_1'] };
     } catch (e) {
       return { unlockedLevels: ['level_1'] };
@@ -123,16 +123,16 @@ export default function App() {
 
     const updatedStats = {
       bestScore: newBest ? result.totalScore : currentBest,
-      bestTime: newBest 
-        ? result.completionTimeSeconds 
+      bestTime: newBest
+        ? result.completionTimeSeconds
         : (stats.bestTime ? Math.min(stats.bestTime, result.completionTimeSeconds) : result.completionTimeSeconds),
       attempts: (stats.attempts || 0) + 1
     };
 
     setStats(updatedStats);
     try {
-      localStorage.setItem('chappati_rush_stats', JSON.stringify(updatedStats));
-    } catch (e) {}
+      localStorage.setItem('chappathi_rush_stats', JSON.stringify(updatedStats));
+    } catch (e) { }
 
     let updatedCampaign = campaignProgress;
     if (currentLevel) {
@@ -158,8 +158,8 @@ export default function App() {
 
       setCampaignProgress(updatedCampaign);
       try {
-        localStorage.setItem('chappati_rush_campaign', JSON.stringify(updatedCampaign));
-      } catch (e) {}
+        localStorage.setItem('chappathi_rush_campaign', JSON.stringify(updatedCampaign));
+      } catch (e) { }
     }
 
     setGameState('RESULT');
@@ -170,8 +170,8 @@ export default function App() {
     setIsMuted(muted);
   };
 
-  const activeCharacter = currentLevel 
-    ? currentLevel.character 
+  const activeCharacter = currentLevel
+    ? currentLevel.character
     : STORY_STAGES[0].levels[0].character;
 
   const nextLevel = currentLevel ? getNextLevel(currentLevel) : null;
@@ -186,8 +186,8 @@ export default function App() {
   return (
     <div className="game-viewport">
       {/* Mute / Unmute Button */}
-      <button 
-        className="sound-toggle-btn" 
+      <button
+        className="sound-toggle-btn"
         onClick={handleToggleSound}
         title={isMuted ? "Unmute Audio" : "Mute Audio"}
       >
@@ -195,65 +195,65 @@ export default function App() {
       </button>
 
       {/* Main Canvas */}
-      <DoughCanvas 
-        dough={dough} 
-        setDough={setDough} 
-        isInteractive={gameState === 'PLAYING'} 
+      <DoughCanvas
+        dough={dough}
+        setDough={setDough}
+        isInteractive={gameState === 'PLAYING'}
         targetShapeType={currentLevel ? currentLevel.shapeType : SHAPES.CIRCLE}
         targetTitle={currentLevel ? `${currentLevel.title} (${currentLevel.shapeType})` : '180px Circle'}
       />
 
       {/* Live Character Commentary Box during Gameplay */}
       {gameState === 'PLAYING' && (
-        <LiveCommentary 
-          character={activeCharacter} 
-          dough={dough} 
-          timeLeft={timeLeft} 
-          totalTime={currentLevel ? currentLevel.timeLimit : DEFAULT_TIME} 
+        <LiveCommentary
+          character={activeCharacter}
+          dough={dough}
+          timeLeft={timeLeft}
+          totalTime={currentLevel ? currentLevel.timeLimit : DEFAULT_TIME}
         />
       )}
 
       {/* UI Overlays */}
       {gameState === 'HOME' && (
-        <HomeScreen 
-          onPlay={handleStartStoryMode} 
-          stats={stats} 
+        <HomeScreen
+          onPlay={handleStartStoryMode}
+          stats={stats}
         />
       )}
 
       {gameState === 'CAMPAIGN_MAP' && (
-        <CampaignMap 
-          campaignProgress={campaignProgress} 
-          onSelectLevel={handleSelectLevel} 
-          onBack={() => setGameState('HOME')} 
+        <CampaignMap
+          campaignProgress={campaignProgress}
+          onSelectLevel={handleSelectLevel}
+          onBack={() => setGameState('HOME')}
         />
       )}
 
       {gameState === 'DIALOGUE' && currentLevel && (
-        <MalayalamDialogueModal 
-          level={currentLevel} 
-          onStartCooking={handleStartLevelCooking} 
+        <MalayalamDialogueModal
+          level={currentLevel}
+          onStartCooking={handleStartLevelCooking}
         />
       )}
 
       {gameState === 'PLAYING' && (
-        <HUD 
-          timeLeft={timeLeft} 
-          onReset={handleResetDough} 
-          onSubmit={() => handleSubmitDough(timeLeft)} 
+        <HUD
+          timeLeft={timeLeft}
+          onReset={handleResetDough}
+          onSubmit={() => handleSubmitDough(timeLeft)}
         />
       )}
 
       {gameState === 'RESULT' && gameResult && (
-        <ResultModal 
-          result={gameResult} 
+        <ResultModal
+          result={gameResult}
           targetTitle={currentLevel ? currentLevel.title : 'Circle'}
-          isNewBest={isNewBest} 
+          isNewBest={isNewBest}
           isLevelPassed={!currentLevel || (gameResult.totalScore >= currentLevel.passingScore)}
           hasNextLevel={!!nextLevel}
           onNextLevel={handleNextLevel}
-          onPlayAgain={() => currentLevel ? setGameState('DIALOGUE') : handleStartQuickPlay()} 
-          onGoHome={() => currentLevel ? setGameState('CAMPAIGN_MAP') : setGameState('HOME')} 
+          onPlayAgain={() => currentLevel ? setGameState('DIALOGUE') : handleStartQuickPlay()}
+          onGoHome={() => currentLevel ? setGameState('CAMPAIGN_MAP') : setGameState('HOME')}
         />
       )}
     </div>

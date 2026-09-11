@@ -2,9 +2,9 @@ import React from 'react';
 import { Play, Trophy, Clock, Target, Info } from 'lucide-react';
 import { soundManager } from '../utils/audio';
 
-export default function HomeScreen({ 
-  onPlay, 
-  stats 
+export default function HomeScreen({
+  onPlay,
+  stats
 }) {
   const handlePlayClick = () => {
     soundManager.playClick();
@@ -14,7 +14,7 @@ export default function HomeScreen({
   return (
     <div className="overlay-screen">
       <div className="title-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center', marginTop: '1.5rem' }}>
-        <span>🫓</span> Chappati Rush
+        <span>🫓</span> Chappathi Rush
       </div>
       <p className="subtitle">Master the art of flatbreads & satisfy Malayalam cinema legends!</p>
 
