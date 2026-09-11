@@ -5,6 +5,7 @@ import { calculateGameScore } from './utils/scoring';
 import { soundManager } from './utils/audio';
 import { SHAPES } from './utils/shapeTargets';
 import { calculateLevelStars, STORY_STAGES } from './utils/malayalamStoryline';
+import { subscribeToAuth, signInWithGoogle, signOutUser } from './utils/firebaseAuth';
 
 import DoughCanvas from './components/DoughCanvas';
 import HomeScreen from './components/HomeScreen';
@@ -13,6 +14,7 @@ import MalayalamDialogueModal from './components/MalayalamDialogueModal';
 import HUD from './components/HUD';
 import ResultModal from './components/ResultModal';
 import LiveCommentary from './components/LiveCommentary';
+import LeaderboardModal from './components/LeaderboardModal';
 
 const DEFAULT_TIME = 30;
 
@@ -24,6 +26,16 @@ export default function App() {
   const [gameResult, setGameResult] = useState(null);
   const [isNewBest, setIsNewBest] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [user, setUser] = useState(null);
+
+  // Firebase Auth State Observer
+  useEffect(() => {
+    const unsubscribe = subscribeToAuth(currentUser => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe && unsubscribe();
+  }, []);
 
   // LocalStorage stats
   const [stats, setStats] = useState(() => {
@@ -71,6 +83,21 @@ export default function App() {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [gameState]);
+
+  // Auth Handlers
+  const handleSignInGoogle = async () => {
+    try {
+      soundManager.playClick();
+      await signInWithGoogle();
+    } catch (err) {
+      alert('Google Sign-In failed or popup was closed.');
+    }
+  };
+
+  const handleSignOut = async () => {
+    soundManager.playClick();
+    await signOutUser();
+  };
 
   // Mode Selection Handlers
   const handleStartStoryMode = () => {
@@ -170,10 +197,9 @@ export default function App() {
     setIsMuted(muted);
   };
 
-  // Character providing live commentary during gameplay
   const activeCharacter = currentLevel 
     ? currentLevel.character 
-    : STORY_STAGES[0].levels[0].character; // Default Dasan Ashaan mentor for quick play
+    : STORY_STAGES[0].levels[0].character;
 
   return (
     <div className="game-viewport">
@@ -205,16 +231,28 @@ export default function App() {
         />
       )}
 
+      {/* Global Leaderboard Modal Overlay */}
+      {showLeaderboard && (
+        <LeaderboardModal 
+          currentUser={user} 
+          onClose={() => setShowLeaderboard(false)} 
+        />
+      )}
+
       {/* UI Overlays */}
-      {gameState === 'HOME' && (
+      {gameState === 'HOME' && !showLeaderboard && (
         <HomeScreen 
+          user={user}
+          onSignInGoogle={handleSignInGoogle}
+          onSignOut={handleSignOut}
+          onOpenLeaderboard={() => setShowLeaderboard(true)}
           onStartStoryMode={handleStartStoryMode} 
           onStartQuickPlay={handleStartQuickPlay} 
           stats={stats} 
         />
       )}
 
-      {gameState === 'CAMPAIGN_MAP' && (
+      {gameState === 'CAMPAIGN_MAP' && !showLeaderboard && (
         <CampaignMap 
           campaignProgress={campaignProgress} 
           onSelectLevel={handleSelectLevel} 
@@ -222,7 +260,7 @@ export default function App() {
         />
       )}
 
-      {gameState === 'DIALOGUE' && currentLevel && (
+      {gameState === 'DIALOGUE' && currentLevel && !showLeaderboard && (
         <MalayalamDialogueModal 
           level={currentLevel} 
           onStartCooking={handleStartLevelCooking} 
@@ -237,12 +275,15 @@ export default function App() {
         />
       )}
 
-      {gameState === 'RESULT' && gameResult && (
+      {gameState === 'RESULT' && gameResult && !showLeaderboard && (
         <ResultModal 
+          user={user}
           result={gameResult} 
+          targetTitle={currentLevel ? currentLevel.title : 'Circle'}
           isNewBest={isNewBest} 
           onPlayAgain={() => currentLevel ? setGameState('DIALOGUE') : handleStartQuickPlay()} 
           onGoHome={() => currentLevel ? setGameState('CAMPAIGN_MAP') : setGameState('HOME')} 
+          onOpenLeaderboard={() => setShowLeaderboard(true)}
         />
       )}
     </div>

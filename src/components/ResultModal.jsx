@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
-import { RotateCcw, Home, Trophy, Sparkles } from 'lucide-react';
+import { Home, Trophy, Sparkles } from 'lucide-react';
 import { soundManager } from '../utils/audio';
+import { saveUserScoreToFirestore } from '../utils/firestoreLeaderboard';
 
-export default function ResultModal({ result, isNewBest, onPlayAgain, onGoHome }) {
+export default function ResultModal({ user, result, targetTitle = 'Circle', isNewBest, onPlayAgain, onGoHome, onOpenLeaderboard }) {
   const [animatedScore, setAnimatedScore] = useState(0);
 
   useEffect(() => {
     // Play celebratory audio
     soundManager.playVictory(isNewBest);
+
+    // Auto-sync score to Firestore if user is signed in
+    if (user) {
+      saveUserScoreToFirestore(user, result.totalScore, result.completionTimeSeconds, targetTitle);
+    }
 
     // Trigger confetti on high scores or new records
     if (result.totalScore >= 88 || isNewBest) {
@@ -37,7 +43,7 @@ export default function ResultModal({ result, isNewBest, onPlayAgain, onGoHome }
     }, stepTime);
 
     return () => clearInterval(timer);
-  }, [result, isNewBest]);
+  }, [user, result, isNewBest, targetTitle]);
 
   return (
     <div className="overlay-screen">
@@ -88,10 +94,15 @@ export default function ResultModal({ result, isNewBest, onPlayAgain, onGoHome }
         </div>
 
         {/* Action Buttons */}
-        <div style={{ display: 'flex', gap: '1rem', width: '100%', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', gap: '0.75rem', width: '100%', justifyContent: 'center', flexWrap: 'wrap' }}>
           <button className="btn-secondary" onClick={onGoHome}>
             <Home size={18} /> Home
           </button>
+          {onOpenLeaderboard && (
+            <button className="btn-secondary" onClick={onOpenLeaderboard} style={{ borderColor: '#fbbf24', color: '#fbbf24' }}>
+              <Trophy size={18} /> Leaderboard
+            </button>
+          )}
           <button className="btn-primary" onClick={onPlayAgain}>
             <Sparkles size={20} fill="#451a03" /> Play Again
           </button>
