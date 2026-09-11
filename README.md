@@ -29,7 +29,8 @@ For Software:
 
 ### Project Demo
 # Video
-<video src="public/demo.mp4" controls width="100%"></video>
+
+<video src="https://github.com/user-attachments/assets/0e70dc6c-1a3f-4ca1-bf2e-47bc2be972da" controls width="100%"></video>
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
