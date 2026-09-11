@@ -1,6 +1,4 @@
-/**
- * Parametric boundary formulas and canvas rendering for 7 target shapes.
- */
+import shapeDefinitions from '../data/shapeDefinitions.json';
 
 export const SHAPES = {
   CIRCLE: 'CIRCLE',
@@ -8,20 +6,21 @@ export const SHAPES = {
   SQUARE: 'SQUARE',
   TRIANGLE: 'TRIANGLE',
   HEART: 'HEART',
-  CRESCENT: 'CRESCENT',
   STAR: 'STAR'
 };
 
 /**
- * Returns an array of 64 sample points (x, y) along the target shape contour relative to (cx, cy).
+ * Generates an array of 64 sample points (x, y) along the target shape contour relative to (cx, cy)
+ * driven directly by shapeDefinitions.json.
  */
 export function getTargetShapePoints(shapeType, cx = 300, cy = 300, numPoints = 64) {
   const points = [];
+  const config = shapeDefinitions[shapeType] || shapeDefinitions.CIRCLE;
 
-  switch (shapeType) {
-    case SHAPES.OVAL: {
-      const rx = 120;
-      const ry = 70;
+  switch (config.type) {
+    case 'oval': {
+      const rx = config.radiusX || 120;
+      const ry = config.radiusY || 70;
       for (let i = 0; i < numPoints; i++) {
         const angle = (i / numPoints) * Math.PI * 2;
         points.push({
@@ -32,9 +31,8 @@ export function getTargetShapePoints(shapeType, cx = 300, cy = 300, numPoints = 
       break;
     }
 
-    case SHAPES.SQUARE: {
-      const half = 80;
-      // 4 sides around (cx, cy)
+    case 'square': {
+      const half = config.halfWidth || 80;
       for (let i = 0; i < numPoints; i++) {
         const t = (i / numPoints) * 4;
         let x, y;
@@ -56,9 +54,8 @@ export function getTargetShapePoints(shapeType, cx = 300, cy = 300, numPoints = 
       break;
     }
 
-    case SHAPES.TRIANGLE: {
-      const r = 100;
-      // 3 vertices of equilateral triangle
+    case 'triangle': {
+      const r = config.radius || 100;
       const vertices = [
         { x: cx, y: cy - r },
         { x: cx + r * Math.cos(Math.PI / 6), y: cy + r * Math.sin(Math.PI / 6) },
@@ -78,63 +75,27 @@ export function getTargetShapePoints(shapeType, cx = 300, cy = 300, numPoints = 
       break;
     }
 
-    case SHAPES.HEART: {
+    case 'heart': {
+      const scale = config.scale || 6.2;
       for (let i = 0; i < numPoints; i++) {
         const t = (i / numPoints) * Math.PI * 2;
-        const x = cx + 6.2 * (16 * Math.pow(Math.sin(t), 3));
-        const y = cy - 6.2 * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+        const x = cx + scale * (16 * Math.pow(Math.sin(t), 3));
+        const y = cy - scale * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
         points.push({ x, y });
       }
       break;
     }
 
-    case SHAPES.CRESCENT: {
-      const half = Math.floor(numPoints / 2);
-      const span = Math.PI * 0.72; // Arc angle span
 
-      // Outer Arc Tip coordinates
-      const topTipX = -12 + 95 * Math.cos(-span);
-      const topTipY = 95 * Math.sin(-span);
-      const botTipX = -12 + 95 * Math.cos(span);
-      const botTipY = 95 * Math.sin(span);
 
-      // Outer Arc: From top tip to bottom tip
-      for (let i = 0; i < half; i++) {
-        const frac = i / (half - 1);
-        const angle = -span + frac * (2 * span);
-        points.push({
-          x: cx - 12 + 95 * Math.cos(angle),
-          y: cy + 95 * Math.sin(angle)
-        });
-      }
+    case 'star': {
+      const outerR = config.outerRadius || 95;
+      const innerR = config.innerRadius || 42;
+      const starPoints = config.numPoints || 5;
 
-      // Inner Arc: From bottom tip back to top tip (tapered to meet tips seamlessly)
-      for (let i = 0; i < numPoints - half; i++) {
-        const frac = i / (numPoints - half - 1);
-        const angle = span - frac * (2 * span);
-        const taper = Math.sin(frac * Math.PI); // 0 at tips, 1 at center cutout
-
-        const innerX = 18 + 72 * Math.cos(angle);
-        const innerY = 72 * Math.sin(angle);
-
-        const targetTipX = (frac < 0.5) ? botTipX : topTipX;
-        const targetTipY = (frac < 0.5) ? botTipY : topTipY;
-
-        points.push({
-          x: cx + (innerX * taper + targetTipX * (1 - taper)),
-          y: cy + (innerY * taper + targetTipY * (1 - taper))
-        });
-      }
-      break;
-    }
-
-    case SHAPES.STAR: {
-      const outerR = 95;
-      const innerR = 42;
       for (let i = 0; i < numPoints; i++) {
         const angle = (i / numPoints) * Math.PI * 2 - Math.PI / 2;
-        // 5 points => 10 segments
-        const step = Math.floor((i / numPoints) * 10);
+        const step = Math.floor((i / numPoints) * (starPoints * 2));
         const radius = step % 2 === 0 ? outerR : innerR;
         points.push({
           x: cx + radius * Math.cos(angle),
@@ -144,9 +105,9 @@ export function getTargetShapePoints(shapeType, cx = 300, cy = 300, numPoints = 
       break;
     }
 
-    case SHAPES.CIRCLE:
+    case 'circle':
     default: {
-      const radius = 90;
+      const radius = config.radius || 90;
       for (let i = 0; i < numPoints; i++) {
         const angle = (i / numPoints) * Math.PI * 2;
         points.push({

@@ -1,0 +1,35 @@
+{
+  "CIRCLE": {
+    "type": "circle",
+    "radius": 90,
+    "description": "Classic 180px Circle"
+  },
+  "OVAL": {
+    "type": "oval",
+    "radiusX": 120,
+    "radiusY": 70,
+    "description": "Soft Oval Bhatura"
+  },
+  "SQUARE": {
+    "type": "square",
+    "halfWidth": 80,
+    "description": "4-Cornered Crispy Paratha"
+  },
+  "TRIANGLE": {
+    "type": "triangle",
+    "radius": 100,
+    "description": "3-Cornered Samosa Naan"
+  },
+  "HEART": {
+    "type": "heart",
+    "scale": 6.2,
+    "description": "Dil-Se Heart Roti"
+  },
+  "STAR": {
+    "type": "star",
+    "outerRadius": 95,
+    "innerRadius": 42,
+    "numPoints": 5,
+    "description": "Shahi 5-Point Royal Star"
+  }
+}

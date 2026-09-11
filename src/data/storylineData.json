@@ -152,25 +152,25 @@
         {
           "id": "level_6",
           "levelNumber": 6,
-          "title": "Chand Naan",
-          "shapeType": "CRESCENT",
-          "timeLimit": 20,
-          "passingScore": 78,
+          "title": "Sunny's Oval Naan",
+          "shapeType": "OVAL",
+          "timeLimit": 22,
+          "passingScore": 75,
           "character": {
             "name": "Dr. Sunny Joseph",
             "movie": "Manichitrathazhu",
             "avatar": "/characters/dr_sunny.jpg",
-            "dialogue": "Unni, this is pure psychology! A crescent moon naan calms Nagavalli's mind instantly!",
+            "dialogue": "Unni, this is pure psychology! A smooth oval naan calms Nagavalli's mind instantly!",
             "tagline": "Eccentric Psychiatrist",
             "comments": {
-              "start": "Pure scientific psychology! Roll the crescent moon!",
+              "start": "Pure scientific psychology! Roll the smooth oval!",
               "good": "Excellent therapy! The curve is scientifically accurate!",
               "bad": "My diagnosis: This shape is completely unhinged!",
               "timeLow": "Quick! Nagavalli is getting restless!",
               "idle": [
-                "Curve it like the moon!",
+                "Stretch it smoothly!",
                 "Psychological perfection required!",
-                "Keep the inner arch smooth!"
+                "Keep the curves balanced!"
               ]
             }
           }
