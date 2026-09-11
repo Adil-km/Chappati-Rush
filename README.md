@@ -29,8 +29,7 @@ For Software:
 
 ### Project Demo
 # Video
-[Add your demo video link here]
-*Demonstrates interactive dough rolling mechanics, stage dialogue modal, score calculation, and level progression*
+<video src="/public/demo.mp4" width="100%"></video>
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
