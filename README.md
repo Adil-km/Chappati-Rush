@@ -29,7 +29,7 @@ For Software:
 
 ### Project Demo
 # Video
-<video src="/public/demo.mp4" width="100%"></video>
+<video src="public/demo.mp4" controls width="100%"></video>
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
