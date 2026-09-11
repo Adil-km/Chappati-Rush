@@ -6,18 +6,15 @@
 
 
 ## Basic Details
-### Team Name: Roti Warriors
-
 
 ### Team Members
-- Team Lead: Developer - College/Institute
-- Member 2: Developer - College/Institute
+- Team Lead: Adil KM - Farook College, Kozhikode
 
 ### Project Description
-Chappathi Rush Rush is an interactive, physics-based 2D roti rolling game set in a hilarious Malayalam cinema universe. Players roll, flatten, and squeeze a 64-vertex deformable dough mesh into custom target shapes (circles, ovals, squares, triangles, hearts, stars) to serve iconic Malayalam movie legends like Dasan Ashaan, Manar Mathai, Anjooran, Pavanayi, Nagavalli, Dr. Sunny, and Sethumadhavan before time runs out!
+Chappathi Rush Rush is an interactive, physics-based 2D chappathi rolling game. Players roll, flatten, and squeeze a 64-vertex deformable dough mesh into custom target shapes (circles, ovals, squares, triangles, hearts, stars) to serve to people before time runs out!
 
 ### The Problem (that doesn't exist)
-Malayalam cinema legends are hungry, impatient, and demanding rotis rolled into absurd geometric shapes (stars, hearts, crescents, squares). Making a normal round roti is hard enough, but serving a crescent roti to Nagavalli or a star roti to Dr. Sunny in under 30 seconds requires elite rolling pin physics mastery.
+Customers are hungry, impatient, and demanding chappathis rolled into absurd geometric shapes (stars, hearts, crescents, squares). Making a normal round chappathi is hard enough, but serving a crescent chappathi to Nagavalli or a star chappathi to Dr. Sunny in under 30 seconds requires elite rolling pin physics mastery.
 
 ### The Solution (that nobody asked for)
 A 64-vertex mass-spring deformable dough physics simulation built on HTML5 Canvas, featuring bidirectional deformation (flattening & inward edge squeezing), live Malayalam dialogue commentary, interactive storyline campaign stages, and dynamic score evaluation!

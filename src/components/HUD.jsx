@@ -20,7 +20,7 @@ export default function HUD({ timeLeft, onSubmit, onReset }) {
       {/* Target Title & Challenge */}
       <div className="hud-pill">
         <span style={{ fontSize: '1.2rem' }}>🫓</span>
-        <span>PERFECT CIRCLE</span>
+        <span>PERFECT CHAPPATHI</span>
       </div>
 
       {/* Timer Display */}

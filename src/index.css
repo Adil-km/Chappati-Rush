@@ -198,25 +198,28 @@ body, html {
 /* Sound Toggle Floating Button */
 .sound-toggle-btn {
   position: absolute;
-  top: 1rem;
+  top: 0.85rem;
   right: 1rem;
-  z-index: 30;
-  background: rgba(30, 15, 5, 0.8);
+  z-index: 50;
+  background: rgba(30, 15, 5, 0.88);
   border: 2px solid var(--glass-border);
   color: #fde68a;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .sound-toggle-btn:hover {
-  background: rgba(245, 158, 11, 0.3);
-  transform: scale(1.1);
+  background: rgba(245, 158, 11, 0.35);
+  transform: scale(1.08);
+  border-color: var(--accent-gold);
 }
 
 /* In-game Canvas Wrapper */
@@ -238,11 +241,12 @@ body, html {
   top: 0;
   left: 0;
   width: 100%;
-  padding: 0.85rem 1.25rem;
+  padding: 0.85rem 4.25rem 0.85rem 1.25rem; /* Reserved 4.25rem right padding for sound-toggle-btn */
   z-index: 10;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
   pointer-events: none;
 }
 
@@ -390,8 +394,15 @@ body, html {
 
 /* Mobile Responsiveness Media Queries */
 @media (max-width: 640px) {
+  .sound-toggle-btn {
+    top: 0.5rem;
+    right: 0.65rem;
+    width: 36px;
+    height: 36px;
+  }
+
   .hud-container {
-    padding: 0.5rem 0.65rem;
+    padding: 0.5rem 3.4rem 0.5rem 0.65rem; /* Reserve 3.4rem right padding on mobile */
     flex-wrap: wrap;
     gap: 0.4rem;
     justify-content: space-between;
