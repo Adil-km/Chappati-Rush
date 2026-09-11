@@ -4,7 +4,7 @@ import { createInitialDough } from './utils/doughPhysics';
 import { calculateGameScore } from './utils/scoring';
 import { soundManager } from './utils/audio';
 import { SHAPES } from './utils/shapeTargets';
-import { calculateLevelStars } from './utils/malayalamStoryline';
+import { calculateLevelStars, STORY_STAGES } from './utils/malayalamStoryline';
 
 import DoughCanvas from './components/DoughCanvas';
 import HomeScreen from './components/HomeScreen';
@@ -12,6 +12,7 @@ import CampaignMap from './components/CampaignMap';
 import MalayalamDialogueModal from './components/MalayalamDialogueModal';
 import HUD from './components/HUD';
 import ResultModal from './components/ResultModal';
+import LiveCommentary from './components/LiveCommentary';
 
 const DEFAULT_TIME = 30;
 
@@ -141,7 +142,6 @@ export default function App() {
       const currentUnlocked = new Set(campaignProgress.unlockedLevels || ['level_1']);
 
       if (isPassed) {
-        // Unlock next level if available
         const nextLevelNumber = currentLevel.levelNumber + 1;
         const nextLevelId = `level_${nextLevelNumber}`;
         currentUnlocked.add(nextLevelId);
@@ -170,6 +170,11 @@ export default function App() {
     setIsMuted(muted);
   };
 
+  // Character providing live commentary during gameplay
+  const activeCharacter = currentLevel 
+    ? currentLevel.character 
+    : STORY_STAGES[0].levels[0].character; // Default Dasan Ashaan mentor for quick play
+
   return (
     <div className="game-viewport">
       {/* Mute / Unmute Button */}
@@ -189,6 +194,16 @@ export default function App() {
         targetShapeType={currentLevel ? currentLevel.shapeType : SHAPES.CIRCLE}
         targetTitle={currentLevel ? `${currentLevel.title} (${currentLevel.shapeType})` : '180px Circle'}
       />
+
+      {/* Live Character Commentary Box during Gameplay */}
+      {gameState === 'PLAYING' && (
+        <LiveCommentary 
+          character={activeCharacter} 
+          dough={dough} 
+          timeLeft={timeLeft} 
+          totalTime={currentLevel ? currentLevel.timeLimit : DEFAULT_TIME} 
+        />
+      )}
 
       {/* UI Overlays */}
       {gameState === 'HOME' && (

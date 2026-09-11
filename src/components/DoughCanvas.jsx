@@ -22,6 +22,9 @@ export default function DoughCanvas({ dough, setDough, isInteractive = true, tar
     }))
   );
 
+  const renderedPos = useRef({ x: CANVAS_SIZE / 2, y: CANVAS_SIZE / 2 });
+  const renderedAngle = useRef(0);
+
   // Main Canvas Render Loop
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -118,10 +121,22 @@ export default function DoughCanvas({ dough, setDough, isInteractive = true, tar
         ctx.restore();
       }
 
-      // 6. Render Rolling Pin Graphic (Always tracks cursor when interactive)
+      // 6. Render Rolling Pin Graphic with Smooth LERP
       if (isInteractive && mousePos.current) {
-        const { x: px, y: py } = mousePos.current;
-        const angle = pinAngle.current;
+        const targetPos = mousePos.current;
+        const targetAng = pinAngle.current;
+
+        // Smooth position LERP (0.35 factor)
+        renderedPos.current.x += (targetPos.x - renderedPos.current.x) * 0.35;
+        renderedPos.current.y += (targetPos.y - renderedPos.current.y) * 0.35;
+
+        // Shortest path angle LERP (0.28 factor)
+        const angleDiff = Math.atan2(Math.sin(targetAng - renderedAngle.current), Math.cos(targetAng - renderedAngle.current));
+        renderedAngle.current += angleDiff * 0.28;
+
+        const px = renderedPos.current.x;
+        const py = renderedPos.current.y;
+        const angle = renderedAngle.current;
 
         ctx.save();
         ctx.translate(px, py);
@@ -185,16 +200,43 @@ export default function DoughCanvas({ dough, setDough, isInteractive = true, tar
     };
   }, [dough, isInteractive, isRolling]);
 
-  // Helper to extract canvas coordinates from event
+  // Helper to extract clamped canvas coordinates from event
   const getCanvasCoords = (e) => {
     const rect = canvasRef.current.getBoundingClientRect();
     const clientX = e.clientX ?? e.touches?.[0]?.clientX;
     const clientY = e.clientY ?? e.touches?.[0]?.clientY;
     if (clientX === undefined || clientY === undefined) return null;
+
+    const rawX = (clientX - rect.left) * (CANVAS_SIZE / rect.width);
+    const rawY = (clientY - rect.top) * (CANVAS_SIZE / rect.height);
+
+    // Clamp cleanly within canvas margins to prevent border edge glitches
     return {
-      x: (clientX - rect.left) * (CANVAS_SIZE / rect.width),
-      y: (clientY - rect.top) * (CANVAS_SIZE / rect.height)
+      x: Math.max(15, Math.min(CANVAS_SIZE - 15, rawX)),
+      y: Math.max(15, Math.min(CANVAS_SIZE - 15, rawY))
     };
+  };
+
+  // Helper to pick closest symmetric rotation angle (prevents 180-degree flip flickers)
+  const getClosestSymmetricAngle = (current, target) => {
+    const candidates = [
+      target,
+      target + Math.PI,
+      target - Math.PI,
+      target + Math.PI * 2,
+      target - Math.PI * 2
+    ];
+    let best = candidates[0];
+    let minDiff = Math.abs(candidates[0] - current);
+
+    for (let i = 1; i < candidates.length; i++) {
+      const diff = Math.abs(candidates[i] - current);
+      if (diff < minDiff) {
+        minDiff = diff;
+        best = candidates[i];
+      }
+    }
+    return best;
   };
 
   // Pointer Event Handlers
@@ -220,9 +262,10 @@ export default function DoughCanvas({ dough, setDough, isInteractive = true, tar
     const dy = coords.y - prevPos.y;
     const dist = Math.hypot(dx, dy);
 
-    if (dist > 2) {
-      // Calculate roller rotation angle aligned perpendicular to stroke
-      pinAngle.current = Math.atan2(dy, dx) + Math.PI / 2;
+    // Require solid displacement (> 5px) to update angle, preventing micro-jitter edge flips
+    if (dist > 5) {
+      const rawAngle = Math.atan2(dy, dx) + Math.PI / 2;
+      pinAngle.current = getClosestSymmetricAngle(pinAngle.current, rawAngle);
     }
 
     if (isRolling && lastMousePos.current) {
@@ -230,7 +273,7 @@ export default function DoughCanvas({ dough, setDough, isInteractive = true, tar
       const p2 = coords;
       const strokeDist = Math.hypot(p2.x - p1.x, p2.y - p1.y);
 
-      if (strokeDist > 3) {
+      if (strokeDist > 4) {
         // Apply physical deformation to dough
         setDough(prevDough => applyRollingPinStroke(prevDough, p1.x, p1.y, p2.x, p2.y, 140));
 
@@ -256,10 +299,11 @@ export default function DoughCanvas({ dough, setDough, isInteractive = true, tar
         width={CANVAS_SIZE}
         height={CANVAS_SIZE}
         style={{
-          width: '100%',
-          height: '100%',
-          maxWidth: '600px',
-          maxHeight: '600px',
+          width: '92vw',
+          height: '92vw',
+          maxWidth: 'min(90vw, 75vh, 560px)',
+          maxHeight: 'min(90vw, 75vh, 560px)',
+          aspectRatio: '1 / 1',
           touchAction: 'none',
           cursor: isInteractive ? 'none' : 'default',
           margin: 'auto',

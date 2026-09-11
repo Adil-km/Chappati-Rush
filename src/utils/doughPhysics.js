@@ -92,18 +92,25 @@ export function applyRollingPinStroke(dough, p1x, p1y, p2x, p2y, pinWidth = 140)
  * Applies a gentle low-pass smoothing filter across adjacent radial vertices.
  */
 export function smoothDoughRadii(radii) {
-  const temp = new Float32Array(radii.length);
   const n = radii.length;
+  const temp = new Float32Array(n);
 
+  // Pass 1: 3-tap weighted moving average
   for (let i = 0; i < n; i++) {
     const prev = radii[(i - 1 + n) % n];
     const curr = radii[i];
     const next = radii[(i + 1) % n];
-    temp[i] = prev * 0.18 + curr * 0.64 + next * 0.18;
+    temp[i] = prev * 0.22 + curr * 0.56 + next * 0.22;
   }
 
+  // Pass 2: 5-tap Gaussian smoothing for silky smooth organic curves
   for (let i = 0; i < n; i++) {
-    radii[i] = temp[i];
+    const p2 = temp[(i - 2 + n) % n];
+    const p1 = temp[(i - 1 + n) % n];
+    const curr = temp[i];
+    const n1 = temp[(i + 1) % n];
+    const n2 = temp[(i + 2) % n];
+    radii[i] = p2 * 0.08 + p1 * 0.24 + curr * 0.36 + n1 * 0.24 + n2 * 0.08;
   }
 }
 

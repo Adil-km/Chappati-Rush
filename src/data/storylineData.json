@@ -1,0 +1,208 @@
+{
+  "stages": [
+    {
+      "id": "stage_1",
+      "title": "Stage 1: Village Street Stall 🟢",
+      "subtitle": "Learn the basics from Dasan Ashaan",
+      "levels": [
+        {
+          "id": "level_1",
+          "levelNumber": 1,
+          "title": "Classic Phulka",
+          "shapeType": "CIRCLE",
+          "timeLimit": 30,
+          "passingScore": 60,
+          "character": {
+            "name": "Dasan Ashaan",
+            "movie": "Nadodikkattu",
+            "avatar": "/characters/dasan_ashaan.jpg",
+            "dialogue": "Hello Mr. Perera! Pavanayi Shavamayi, but your roti shouldn't be shavamayi! Roll me a classic round Phulka fast!",
+            "tagline": "Master Chef Mentor",
+            "comments": {
+              "start": "Ahaa! Show me your Belan magic, apprentice!",
+              "good": "Bhaashaa! Looking round and smooth like a full moon!",
+              "bad": "Ayyeyyo! What is this shape? Looks like a flat potato!",
+              "timeLow": "Vegam, vegam! Time is running out!",
+              "idle": ["Don't press too hard!", "Keep rolling around the edges!", "Focus on the shape!"]
+            }
+          }
+        },
+        {
+          "id": "level_2",
+          "levelNumber": 2,
+          "title": "Soft Bhatura",
+          "shapeType": "OVAL",
+          "timeLimit": 30,
+          "passingScore": 65,
+          "character": {
+            "name": "Manar Mathai",
+            "movie": "Ramji Rao Speaking",
+            "avatar": "/characters/manar_mathai.jpg",
+            "dialogue": "Hello Urvashi Theatres! Urvashi needs an oval Bhatura for her lunch box right now!",
+            "tagline": "Theatre Manager",
+            "comments": {
+              "start": "Hello! Make it nice and oval for Urvashi!",
+              "good": "Wonderful! That oval curve is perfect!",
+              "bad": "Enthutukatha idhu! That looks like a broken egg!",
+              "timeLow": "Fast! Phone is ringing for lunch delivery!",
+              "idle": ["Stretch it sideways!", "Keep it soft and fluffy!", "Don't ruin Urvashi's lunch!"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "stage_2",
+      "title": "Stage 2: Highway Dhaba 🟡",
+      "subtitle": "Serve high-speed travelers & local legends",
+      "levels": [
+        {
+          "id": "level_3",
+          "levelNumber": 3,
+          "title": "Crispy Paratha",
+          "shapeType": "SQUARE",
+          "timeLimit": 25,
+          "passingScore": 70,
+          "character": {
+            "name": "Anjooran",
+            "movie": "Godfather",
+            "avatar": "/characters/anjooran.jpg",
+            "dialogue": "No women allowed in my kitchen, and NO ROUND ROTIS! Roll me a strictly 4-cornered square paratha!",
+            "tagline": "Strict Patriarch",
+            "comments": {
+              "start": "Straight lines! 4 equal corners!",
+              "good": "Good sharp corners! Anjooran is pleased!",
+              "bad": "Curved edges?! Did I ask for a round roti?!",
+              "timeLow": "Hurry up before Anjooran gets furious!",
+              "idle": ["No circles allowed here!", "Square means 4 sharp corners!", "Roll into the corners!"]
+            }
+          }
+        },
+        {
+          "id": "level_4",
+          "levelNumber": 4,
+          "title": "Samosa Naan",
+          "shapeType": "TRIANGLE",
+          "timeLimit": 25,
+          "passingScore": 72,
+          "character": {
+            "name": "Mangalassery Neelakandan",
+            "movie": "Devasuram",
+            "avatar": "/characters/neelakandan.jpg",
+            "dialogue": "Mundakkal Shekaran thinks he can cook? Show him Neelakandan's sharp 3-cornered triangle naan!",
+            "tagline": "Feudal Hero",
+            "comments": {
+              "start": "Show Mundakkal Shekaran what Neelakandan can do!",
+              "good": "Ha! Sharp 3 corners like a royal sword!",
+              "bad": "This soft blob won't scare Shekaran!",
+              "timeLow": "Clock is ticking, finish the triangle!",
+              "idle": ["Three sharp points!", "Roll towards the apex!", "Make Neelakandan proud!"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "stage_3",
+      "title": "Stage 3: Royal Palace Banquet 🔴",
+      "subtitle": "Prepare exquisite shapes for royal guests",
+      "levels": [
+        {
+          "id": "level_5",
+          "levelNumber": 5,
+          "title": "Dil-Se Roti",
+          "shapeType": "HEART",
+          "timeLimit": 22,
+          "passingScore": 75,
+          "character": {
+            "name": "Nagavalli",
+            "movie": "Manichitrathazhu",
+            "avatar": "/characters/nagavalli.jpg",
+            "dialogue": "Vidhyaaa! Give Nagavalli a romantic Heart Roti or she will dance her furious Anklet dance!",
+            "tagline": "Royal Classical Dancer",
+            "comments": {
+              "start": "Vidhyaaa! Make a romantic heart!",
+              "good": "Ah... Nagavalli's heart is pleased!",
+              "bad": "Is this a heart or a squashed coconut?! Nagavalli will wake up!",
+              "timeLow": "The anklet bells are starting to chime! Fast!",
+              "idle": ["Two top lobes, one bottom point!", "Gentle strokes for Nagavalli!", "Make it romantic!"]
+            }
+          }
+        },
+        {
+          "id": "level_6",
+          "levelNumber": 6,
+          "title": "Chand Naan",
+          "shapeType": "CRESCENT",
+          "timeLimit": 20,
+          "passingScore": 78,
+          "character": {
+            "name": "Dr. Sunny Joseph",
+            "movie": "Manichitrathazhu",
+            "avatar": "/characters/dr_sunny.jpg",
+            "dialogue": "Unni, this is pure psychology! A crescent moon naan calms Nagavalli's mind instantly!",
+            "tagline": "Eccentric Psychiatrist",
+            "comments": {
+              "start": "Pure scientific psychology! Roll the crescent moon!",
+              "good": "Excellent therapy! The curve is scientifically accurate!",
+              "bad": "My diagnosis: This shape is completely unhinged!",
+              "timeLow": "Quick! Nagavalli is getting restless!",
+              "idle": ["Curve it like the moon!", "Psychological perfection required!", "Keep the inner arch smooth!"]
+            }
+          }
+        },
+        {
+          "id": "level_7",
+          "levelNumber": 7,
+          "title": "Shahi Star Roti",
+          "shapeType": "STAR",
+          "timeLimit": 20,
+          "passingScore": 80,
+          "character": {
+            "name": "Sethumadhavan",
+            "movie": "Kireedam",
+            "avatar": "/characters/sethumadhavan.jpg",
+            "dialogue": "Kireedam is not just a crown, it's a 5-pointed star! Roll me a royal star flatbread!",
+            "tagline": "Tragic Hero",
+            "comments": {
+              "start": "Crown the king with a 5-pointed star!",
+              "good": "5 shining points! Worthy of the crown!",
+              "bad": "This is a tragedy... Where are the 5 star points?!",
+              "timeLow": "Fate is calling, finish the star fast!",
+              "idle": ["5 outer star points!", "Pull outward gently!", "Crown the roti!"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "stage_4",
+      "title": "Stage 4: World Roti Championship 🔥",
+      "subtitle": "Face the ultimate hitman chef",
+      "levels": [
+        {
+          "id": "level_8",
+          "levelNumber": 8,
+          "title": "Pavanayi's Briefcase Shape",
+          "shapeType": "STAR",
+          "timeLimit": 15,
+          "passingScore": 85,
+          "character": {
+            "name": "Pavanayi",
+            "movie": "Nadodikkattu",
+            "avatar": "/characters/pavanayi.jpg",
+            "dialogue": "Pavanayi ready! Match my secret shape or Pavanayi will finish your roti career forever!",
+            "tagline": "Secret Assassin Chef",
+            "comments": {
+              "start": "Pavanayi ready! Let's see your weapons!",
+              "good": "Impossible... You matched Pavanayi's secret design!",
+              "bad": "Pavanayi shavamayi? No! Your roti is shavamayi!",
+              "timeLow": "Briefcase timer activated! 5 seconds left!",
+              "idle": ["Pavanayi is watching your every move!", "Don't make a single mistake!", "Secret assassin level accuracy!"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
