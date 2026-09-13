@@ -241,6 +241,7 @@ export default function App() {
           timeLeft={timeLeft}
           onReset={handleResetDough}
           onSubmit={() => handleSubmitDough(timeLeft)}
+          onGoHome={() => currentLevel ? setGameState('CAMPAIGN_MAP') : setGameState('HOME')}
         />
       )}
 

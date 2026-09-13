@@ -25,11 +25,25 @@
     "scale": 6.2,
     "description": "Dil-Se Heart Roti"
   },
-  "STAR": {
+  "ROYAL_STAR": {
     "type": "star",
     "outerRadius": 95,
     "innerRadius": 42,
     "numPoints": 5,
     "description": "Shahi 5-Point Royal Star"
+  },
+  "STAR": {
+    "type": "star",
+    "outerRadius": 100,
+    "innerRadius": 38,
+    "numPoints": 5,
+    "description": "Golden 5-Point Royal Star"
+  },
+  "CROWN": {
+    "type": "crown",
+    "outerRadius": 95,
+    "innerRadius": 40,
+    "numPeaks": 5,
+    "description": "Grand 5-Peak Boss Crown Roti"
   }
 }

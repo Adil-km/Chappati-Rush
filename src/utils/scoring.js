@@ -21,7 +21,7 @@ export function calculateGameScore(dough, completionTimeSeconds, targetShapeType
     for (let i = 0; i < numVertices; i++) {
       const angle = (i / numVertices) * Math.PI * 2;
       const playerDist = radii[i];
-      
+
       const tp = targetPoints[i];
       const targetDist = Math.hypot(tp.x - centerX, tp.y - centerY);
 
@@ -79,17 +79,18 @@ export function calculateGameScore(dough, completionTimeSeconds, targetShapeType
   const totalScore = Math.min(100, shapeScore + sizeScore + smoothnessScore + thicknessScore + speedScore);
 
   // Performance Rating mapping (FRD Section 15)
-  let rating = { title: 'Disaster Roti', emoji: '💀', color: '#ef4444' };
+  let rating = { title: 'Shokam Chappathi', emoji: '💀', color: '#ef4444' };
+
   if (totalScore >= 95) {
-    rating = { title: 'Roti Master', emoji: '👑', color: '#fbbf24' };
+    rating = { title: 'Adipoli Chappathi', emoji: '👑', color: '#fbbf24' };
   } else if (totalScore >= 90) {
-    rating = { title: 'Excellent', emoji: '⭐', color: '#10b981' };
+    rating = { title: 'Kidilan Chappathi', emoji: '⭐', color: '#10b981' };
   } else if (totalScore >= 80) {
-    rating = { title: 'Great', emoji: '🔥', color: '#f97316' };
+    rating = { title: 'Set Chappathi', emoji: '🔥', color: '#f97316' };
   } else if (totalScore >= 70) {
-    rating = { title: 'Good', emoji: '👍', color: '#60a5fa' };
+    rating = { title: 'Kuzhappamilla', emoji: '👍', color: '#60a5fa' };
   } else if (totalScore >= 50) {
-    rating = { title: 'Needs Practice', emoji: '😐', color: '#a855f7' };
+    rating = { title: 'Thattikoottu Chappahi', emoji: '😐', color: '#a855f7' };
   }
 
   return {

@@ -26,18 +26,18 @@ export default function CampaignMap({ campaignProgress, onSelectLevel, onBack })
       </div>
 
       <p className="subtitle" style={{ fontSize: 'clamp(0.9rem, 3vw, 1.1rem)', marginBottom: '1.25rem' }}>
-        Help Dasan Ashaan serve Malayalam cinema's iconic legends & win the Golden Belan!
+        Serve the legends. Master the Chappathikkol. Win the Golden Chappathikkol!
       </p>
 
       {/* Campaign Stages */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%', maxWidth: '800px' }}>
         {STORY_STAGES.map((stage) => (
-          <div 
-            key={stage.id} 
-            style={{ 
-              background: 'rgba(30, 12, 4, 0.75)', 
-              border: '2px solid rgba(254, 243, 199, 0.2)', 
-              borderRadius: '1rem', 
+          <div
+            key={stage.id}
+            style={{
+              background: 'rgba(30, 12, 4, 0.75)',
+              border: '2px solid rgba(254, 243, 199, 0.2)',
+              borderRadius: '1rem',
               padding: '1rem',
               backdropFilter: 'blur(6px)'
             }}

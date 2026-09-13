@@ -2,7 +2,7 @@ import React from 'react';
 import { Clock, CheckCircle, RotateCcw } from 'lucide-react';
 import { soundManager } from '../utils/audio';
 
-export default function HUD({ timeLeft, onSubmit, onReset }) {
+export default function HUD({ timeLeft, onSubmit, onReset, onGoHome }) {
   const handleReset = () => {
     soundManager.playClick();
     onReset();
@@ -18,9 +18,9 @@ export default function HUD({ timeLeft, onSubmit, onReset }) {
   return (
     <div className="hud-container">
       {/* Target Title & Challenge */}
-      <div className="hud-pill">
+      <div className="hud-pill" style={{ cursor: "pointer" }}>
         <span style={{ fontSize: '1.2rem' }}>🫓</span>
-        <span>PERFECT CHAPPATHI</span>
+        <span onClick={onGoHome}>CHAPPATHI RUSH</span>
       </div>
 
       {/* Timer Display */}

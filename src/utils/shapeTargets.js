@@ -6,7 +6,9 @@ export const SHAPES = {
   SQUARE: 'SQUARE',
   TRIANGLE: 'TRIANGLE',
   HEART: 'HEART',
-  STAR: 'STAR'
+  STAR: 'STAR',
+  ROYAL_STAR: 'ROYAL_STAR',
+  CROWN: 'CROWN'
 };
 
 /**
@@ -92,14 +94,60 @@ export function getTargetShapePoints(shapeType, cx = 300, cy = 300, numPoints = 
       const outerR = config.outerRadius || 95;
       const innerR = config.innerRadius || 42;
       const starPoints = config.numPoints || 5;
+      const totalVertices = starPoints * 2;
+
+      const vertices = [];
+      for (let k = 0; k < totalVertices; k++) {
+        const angle = (k / totalVertices) * Math.PI * 2 - Math.PI / 2;
+        const r = k % 2 === 0 ? outerR : innerR;
+        vertices.push({
+          x: cx + r * Math.cos(angle),
+          y: cy + r * Math.sin(angle)
+        });
+      }
 
       for (let i = 0; i < numPoints; i++) {
-        const angle = (i / numPoints) * Math.PI * 2 - Math.PI / 2;
-        const step = Math.floor((i / numPoints) * (starPoints * 2));
-        const radius = step % 2 === 0 ? outerR : innerR;
+        const t = (i / numPoints) * totalVertices;
+        const segIndex = Math.floor(t);
+        const frac = t - segIndex;
+        const v1 = vertices[segIndex % totalVertices];
+        const v2 = vertices[(segIndex + 1) % totalVertices];
         points.push({
-          x: cx + radius * Math.cos(angle),
-          y: cy + radius * Math.sin(angle)
+          x: v1.x + frac * (v2.x - v1.x),
+          y: v1.y + frac * (v2.y - v1.y)
+        });
+      }
+      break;
+    }
+
+    case 'crown': {
+      // 5-peak majestic crown polygon contour
+      const crownVertices = [
+        { x: 0, y: -95 },     // Top center peak
+        { x: 22, y: +10 },    // Dip right of center
+        { x: 50, y: -75 },    // Mid-right peak
+        { x: 58, y: +15 },    // Dip outer right
+        { x: 92, y: -55 },    // Outer right peak
+        { x: 95, y: -15 },    // Outer right shoulder
+        { x: 80, y: +55 },    // Bottom right corner
+        { x: -80, y: +55 },   // Bottom left corner
+        { x: -95, y: -15 },   // Outer left shoulder
+        { x: -92, y: -55 },   // Outer left peak
+        { x: -58, y: +15 },   // Dip outer left
+        { x: -50, y: -75 },   // Mid-left peak
+        { x: -22, y: +10 }    // Dip left of center
+      ];
+
+      const numSegs = crownVertices.length;
+      for (let i = 0; i < numPoints; i++) {
+        const t = (i / numPoints) * numSegs;
+        const segIndex = Math.floor(t);
+        const frac = t - segIndex;
+        const v1 = crownVertices[segIndex % numSegs];
+        const v2 = crownVertices[(segIndex + 1) % numSegs];
+        points.push({
+          x: cx + v1.x + frac * (v2.x - v1.x),
+          y: cy + v1.y + frac * (v2.y - v1.y)
         });
       }
       break;

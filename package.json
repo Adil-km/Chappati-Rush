@@ -24,6 +24,8 @@
   },
   "homepage": "https://github.com/Adil-km/Chappathi-Rush#readme",
   "dependencies": {
+    "@microsoft/clarity": "^1.0.2",
+    "@vercel/analytics": "^2.0.1",
     "canvas-confetti": "^1.9.4",
     "howler": "^2.2.4",
     "lucide-react": "^1.44.0",
