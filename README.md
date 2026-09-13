@@ -47,7 +47,7 @@ For Software:
 
 # Video
 
-<video src="./public/demo.mp4" controls width="100%"></video>
+<video src="https://github.com/user-attachments/assets/ef700646-315b-4841-ad53-c694e1cc1be2" controls width="100%"></video>
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
